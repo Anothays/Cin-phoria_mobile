@@ -29,7 +29,7 @@ export default function index() {
       <ScrollView>
         <View style={styles.logoContainer}>
           <Image
-            source={require("@/assets/images/cinephoria_logo.png")}
+            source={require("@/assets/logos/cinephoria_logo.png")}
             style={styles.logo}
           />
           {/* <TouchableOpacity style={styles.cinemaSelector}>
