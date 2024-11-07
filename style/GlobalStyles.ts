@@ -4,6 +4,8 @@ import { StyleSheet } from "react-native";
 export const globalStyles = StyleSheet.create({
   screen: {
     flex: 1,
-    padding: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    // padding: 20,
   }
 })
