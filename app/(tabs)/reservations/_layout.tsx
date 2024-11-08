@@ -10,12 +10,6 @@ export default function layout() {
           title: "Réservations",
         }}
       />
-      <Stack.Screen
-        name="[id]"
-        options={{
-          headerShown: true,
-        }}
-      />
     </Stack>
   );
 }

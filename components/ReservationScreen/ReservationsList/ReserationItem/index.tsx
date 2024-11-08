@@ -1,71 +1,72 @@
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
-import { useThemeColors } from "@/hooks/useThemeColor";
 import { ReservationType } from "@/types/ReservationType";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import { useNavigation } from "@react-navigation/native";
-import { Link } from "expo-router";
+import { useRouter } from "expo-router";
 import React from "react";
-import { Image, Pressable, StyleSheet } from "react-native";
+import { Image, StyleSheet, TouchableOpacity } from "react-native";
 
 export default function ReservationItem({
   reservation,
 }: {
   reservation: ReservationType;
 }) {
-  const colors = useThemeColors();
-  const navigation = useNavigation();
   const { tickets, projectionEvent, seats, totalPrice } = reservation;
-  const { movie, movieTheater, date, beginAt } = projectionEvent;
-  console.log("projectionEvent", projectionEvent);
+  const { movie, movieTheater, date, beginAt, endAt } = projectionEvent;
+  const router = useRouter();
+  const handlePress = () => {
+    router.push({
+      pathname: `/tickets/[reservationId]`,
+      params: {
+        tickets: JSON.stringify(tickets),
+        reservation: JSON.stringify(reservation),
+        reservationId: reservation.id,
+        // ticketCodes: tickets.map((ti) => ti.uniqueCode),
+        // movieTitle: movie.title,
+        // date,
+        // beginAt,
+        // endAt,
+        // room: projectionEvent.projectionRoom.titleRoom,
+        // format: projectionEvent.format.projectionFormatName,
+        // version: projectionEvent.language,
+      },
+    });
+  };
 
   return (
-    <Pressable style={styles.itemContainer}>
-      <Link
-        href={{
-          pathname: `/reservations/[id]`,
-          params: {
-            id: reservation.id,
-            ticketCodes: tickets.map((ti) => ti.uniqueCode),
-            movieTitle: movie.title,
-            date,
-            beginAt,
-            room: projectionEvent.projectionRoom.titleRoom,
-            format: projectionEvent.format.projectionFormatName,
-            version: projectionEvent.language,
-          },
+    <TouchableOpacity style={styles.itemContainer} onPress={handlePress}>
+      <Image
+        source={{
+          uri: `${process.env.EXPO_PUBLIC_API_URL}/uploads/images/${reservation.projectionEvent.movie.coverImageName}`, // Remplace avec l'URL de l'image du film ou un placeholder
         }}
-      >
-        <Image
-          source={{
-            uri: `${process.env.EXPO_PUBLIC_API_URL}/uploads/images/${reservation.projectionEvent.movie.coverImageName}`, // Remplace avec l'URL de l'image du film ou un placeholder
-          }}
-          width={80}
-          height={80}
-          borderRadius={5}
-          style={styles.image}
-        />
+        width={80}
+        height={80}
+        borderRadius={5}
+        style={styles.image}
+      />
 
-        <ThemedView style={styles.detailsContainer}>
-          <ThemedText style={styles.title}>{movie.title}</ThemedText>
+      <ThemedView style={styles.detailsContainer}>
+        <ThemedText style={styles.title}>{movie.title}</ThemedText>
 
-          <ThemedText style={styles.subtext}>
-            Le {date} à {beginAt}, {movieTheater.theaterName}
-          </ThemedText>
+        <ThemedText style={styles.subtext}>
+          Le {date} - {movieTheater.theaterName}
+        </ThemedText>
+        <ThemedText style={[styles.subtext, { fontWeight: "bold" }]}>
+          {beginAt} - {endAt}
+        </ThemedText>
 
-          <ThemedText style={styles.subtext}>
-            <Ionicons name="ticket-outline" size={24} color="#666" />
-            {"x"}
-            {tickets.length}
-          </ThemedText>
-        </ThemedView>
+        <ThemedText style={[styles.subtext, { paddingVertical: 2 }]}>
+          <Ionicons name="ticket-outline" size={24} color="#666" />
+          {"x"}
+          {tickets.length}
+        </ThemedText>
+      </ThemedView>
 
-        <ThemedView style={styles.priceContainer}>
-          <MaterialIcons name="navigate-next" size={24} color="#666" />
-        </ThemedView>
-      </Link>
-    </Pressable>
+      <ThemedView style={styles.priceContainer}>
+        <MaterialIcons name="navigate-next" size={24} color="#666" />
+      </ThemedView>
+    </TouchableOpacity>
   );
 }
 
@@ -112,7 +113,6 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "column",
     justifyContent: "flex-start",
-    // backgroundColor: "red",
   },
   title: {
     fontSize: 16,
@@ -122,8 +122,6 @@ const styles = StyleSheet.create({
   subtext: {
     fontSize: 14,
     color: "#666",
-    paddingVertical: 2,
-    // backgroundColor: "green",
   },
   priceContainer: {
     alignItems: "flex-end",

@@ -13,10 +13,23 @@ export const Layout = () => {
   return (
     <Stack
       screenOptions={{
-        headerShown: false,
+        headerShown: true,
       }}
     >
-      <Stack.Screen name="(tabs)" />
+      <Stack.Screen
+        name="(tabs)"
+        options={{
+          headerShown: false,
+          title: "Home",
+        }}
+      />
+      <Stack.Screen
+        name="tickets/[reservationId]"
+        options={{
+          headerShown: true,
+          headerBackTitle: "retour",
+        }}
+      />
     </Stack>
   );
 };
