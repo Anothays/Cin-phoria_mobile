@@ -20,9 +20,11 @@ export default function SignUpForm() {
     setIsLoading(true);
     try {
       const response = await onLogin!(email, password);
-      if (!response) {
-        console.log("response => ", response);
-        alert(response.error);
+      console.log(response);
+
+      if (!response || response.error) {
+        console.log("response => ", response.message);
+        alert("Identifiants invalides");
       }
     } catch (error) {
       alert(error);
