@@ -9,7 +9,7 @@ import {
   View,
 } from "react-native";
 
-export default function index() {
+export default function Index() {
   const colors = useThemeColors();
 
   const movies = [

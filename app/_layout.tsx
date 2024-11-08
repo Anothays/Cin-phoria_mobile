@@ -10,8 +10,6 @@ export default function App() {
 }
 
 export const Layout = () => {
-  // const colors = useThemeColors();
-
   return (
     <Stack
       screenOptions={{
