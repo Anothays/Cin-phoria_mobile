@@ -17,7 +17,7 @@ export default function Reservations() {
   if (isLoading) return <ActivityIndicator size="large" />;
 
   const renderReservationItem = ({ item }: { item: ReservationType }) => (
-    <ReservationItem reservation={item} />
+    <ReservationItem reservation={item} key={item.id} />
   );
 
   if (reservations.length > 0) {
