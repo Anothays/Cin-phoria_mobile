@@ -1,10 +1,10 @@
 import { useAuth } from "@/components/Context/AuthContext";
+import ReservationList from "@/components/ReservationScreen/ReservationsList";
 import SignUpForm from "@/components/SignupScreen/SignupForm";
-import { ThemedText } from "@/components/ThemedText";
 import { globalStyles } from "@/style/GlobalStyles";
 import { SafeAreaView } from "react-native";
 
-export default function index() {
+export default function Index() {
   const { authState } = useAuth();
 
   return (
@@ -13,11 +13,7 @@ export default function index() {
         ...globalStyles.screen,
       }}
     >
-      {authState?.authenticated ? (
-        <ThemedText>Mes réservations</ThemedText>
-      ) : (
-        <SignUpForm />
-      )}
+      {authState?.authenticated ? <ReservationList /> : <SignUpForm />}
     </SafeAreaView>
   );
 }

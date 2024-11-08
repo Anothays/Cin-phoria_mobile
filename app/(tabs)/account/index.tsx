@@ -4,7 +4,7 @@ import SignUpForm from "@/components/SignupScreen/SignupForm";
 import { globalStyles } from "@/style/GlobalStyles";
 import { SafeAreaView } from "react-native";
 
-export default function index() {
+export default function Index() {
   const { authState } = useAuth();
 
   return (

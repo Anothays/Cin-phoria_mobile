@@ -1,14 +1,11 @@
-import { useThemeColors } from "@/hooks/useThemeColor";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
 
 export default function TabLayout() {
-  const colors = useThemeColors();
-
   return (
     <Tabs screenOptions={{ headerShown: false }}>
       <Tabs.Screen
-        name="(movies)"
+        name="movies"
         options={{
           title: "Films",
           tabBarIcon: ({ color }) => (
