@@ -1,20 +1,12 @@
-import { ThemedText } from "@/components/ThemedText";
-import { useThemeColors } from "@/hooks/useThemeColor";
-import { globalStyles } from "@/style/GlobalStyles";
-import { SafeAreaView, ScrollView } from "react-native";
+import React from "react";
+import { SafeAreaView, Text } from "react-native";
 
-export default function Index() {
-  const colors = useThemeColors();
+const index = () => {
   return (
-    <SafeAreaView
-      style={{
-        ...globalStyles.screen,
-        backgroundColor: colors.backgroundSecondary,
-      }}
-    >
-      <ScrollView>
-        <ThemedText>Cinémas</ThemedText>
-      </ScrollView>
+    <SafeAreaView>
+      <Text>Les cinémas</Text>
     </SafeAreaView>
   );
-}
+};
+
+export default index;
