@@ -106,20 +106,32 @@ export default function Account() {
 
       {/* Liste des actions */}
       <View style={styles.actionList}>
-        <TouchableOpacity style={styles.actionItem}>
+        <TouchableOpacity
+          style={styles.actionItem}
+          onPress={() => alert("Feature en développement")}
+        >
           <Text style={styles.actionText}>Modifier mon profil</Text>
         </TouchableOpacity>
 
         <View style={styles.actionItem}>
           <Text style={styles.actionText}>Mode sombre</Text>
-          <Switch value={isDarkMode} onValueChange={handleToggleDarkMode} />
+          <Switch
+            value={isDarkMode}
+            onValueChange={() => alert("Feature en développement")}
+          />
         </View>
 
-        <TouchableOpacity style={styles.actionItem}>
+        <TouchableOpacity
+          style={styles.actionItem}
+          onPress={() => alert("Feature en développement")}
+        >
           <Text style={styles.actionText}>Termes et conditions</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.actionItem}>
+        <TouchableOpacity
+          style={styles.actionItem}
+          onPress={() => alert("Feature en développement")}
+        >
           <Text style={styles.actionText}>Politique d'utilisation</Text>
         </TouchableOpacity>
 
