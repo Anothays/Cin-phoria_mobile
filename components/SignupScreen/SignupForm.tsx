@@ -45,6 +45,7 @@ export default function SignUpForm() {
         style={styles.input}
         placeholder="Email"
         onChangeText={setEmail}
+        textContentType="emailAddress"
       />
       <TextInput
         style={styles.input}
