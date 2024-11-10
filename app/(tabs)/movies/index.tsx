@@ -1,13 +1,7 @@
 import { ThemedText } from "@/components/ThemedText";
+import { ThemedView } from "@/components/ThemedView";
 import { useThemeColors } from "@/hooks/useThemeColor";
-import {
-  Image,
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { SafeAreaView, StyleSheet } from "react-native";
 
 export default function Index() {
   const colors = useThemeColors();
@@ -22,60 +16,12 @@ export default function Index() {
     // Add more movies as needed
   ];
 
+  alert("Page en cours de développement");
   return (
-    <SafeAreaView
-      style={{ ...styles.container, backgroundColor: colors.backgroundPrimary }}
-    >
-      <ScrollView>
-        <View style={styles.logoContainer}>
-          <Image
-            source={require("@/assets/logos/cinephoria_logo.png")}
-            style={styles.logo}
-          />
-          {/* <TouchableOpacity style={styles.cinemaSelector}>
-            <Text style={styles.cinemaText}>Tous les cinémas</Text>
-          </TouchableOpacity> */}
-        </View>
-
-        {/* Menu Tabs */}
-        <View style={styles.menuTabs}>
-          <TouchableOpacity style={[styles.tab, styles.activeTab]}>
-            <ThemedText>À L'AFFICHE</ThemedText>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.tab}>
-            <ThemedText>LABELS</ThemedText>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.tab}>
-            <ThemedText>ÉVÉNEMENTS</ThemedText>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.tab}>
-            <ThemedText>EN FAMILLE</ThemedText>
-          </TouchableOpacity>
-        </View>
-
-        {/* Featured Movie */}
-        <View style={styles.featuredMovie}>
-          <Image
-            source={require("@/assets/images/pizza.jpeg")}
-            style={styles.featuredImage}
-          />
-          <ThemedText>TROIS AMIES</ThemedText>
-          <View style={styles.ratingContainer}>
-            <ThemedText style={styles.ratingText}>3.8</ThemedText>
-            <ThemedText style={styles.starRating}>★★★★★</ThemedText>
-          </View>
-        </View>
-
-        {/* Movie Grid */}
-        <View style={styles.movieGrid}>
-          {movies.map((movie, index) => (
-            <TouchableOpacity key={index} style={styles.movieCard}>
-              <Image source={movie.image} style={styles.movieImage} />
-              <ThemedText style={styles.movieTitle}>{movie.title}</ThemedText>
-            </TouchableOpacity>
-          ))}
-        </View>
-      </ScrollView>
+    <SafeAreaView style={styles.container}>
+      <ThemedView>
+        <ThemedText>Les films</ThemedText>
+      </ThemedView>
     </SafeAreaView>
   );
 }
@@ -83,7 +29,9 @@ export default function Index() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // backgroundColor: "#0d1b2a",
+    justifyContent: "center",
+    alignItems: "center",
+    // backgroundColor: "green",
   },
   topBar: {
     flexDirection: "row",
