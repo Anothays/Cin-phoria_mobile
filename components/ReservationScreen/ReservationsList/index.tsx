@@ -13,6 +13,7 @@ import ReservationItem from "./ReserationItem";
 
 export default function Reservations() {
   const { isLoading, reservations, getData } = useReservation();
+  const currentDate = new Date();
 
   if (isLoading) return <ActivityIndicator size="large" />;
 
@@ -21,12 +22,40 @@ export default function Reservations() {
   );
 
   if (reservations.length > 0) {
+    const upcomingReservations: ReservationType[] = [];
+    const finishedReservations: ReservationType[] = [];
+    reservations.forEach((reservation) => {
+      const reservationDate = new Date(
+        reservation.projectionEvent.date.split("/").reverse().join("-"),
+      );
+      if (reservationDate > currentDate) {
+        upcomingReservations.push(reservation);
+      } else {
+        finishedReservations.push(reservation);
+      }
+    });
     return (
       <ThemedView style={styles.container}>
         <ThemedText style={styles.header}>Réservations</ThemedText>
         <ThemedText style={styles.subheader}>Vos séances à venir</ThemedText>
+        {upcomingReservations.length > 0 ? (
+          <FlatList
+            data={upcomingReservations}
+            renderItem={renderReservationItem}
+            keyExtractor={(item) => item.id.toString()}
+            contentContainerStyle={styles.list}
+            refreshControl={
+              <RefreshControl refreshing={isLoading} onRefresh={getData} />
+            }
+          />
+        ) : (
+          <ThemedText style={{ textAlign: "center" }}>
+            Pas de réservation à venir
+          </ThemedText>
+        )}
+        <ThemedText style={styles.subheader}>Vos séances terminées</ThemedText>
         <FlatList
-          data={reservations}
+          data={finishedReservations}
           renderItem={renderReservationItem}
           keyExtractor={(item) => item.id.toString()}
           contentContainerStyle={styles.list}
