@@ -2,17 +2,13 @@ import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import useReservation from "@/hooks/useReservations";
 import { ReservationType } from "@/types/ReservationType";
-import React from "react";
-import {
-  ActivityIndicator,
-  FlatList,
-  RefreshControl,
-  StyleSheet,
-} from "react-native";
+import React, { useState } from "react";
+import { ActivityIndicator, SectionList, StyleSheet } from "react-native";
 import ReservationItem from "./ReserationItem";
 
 export default function Reservations() {
   const { isLoading, reservations, getData } = useReservation();
+  const [refreshing, setRefreshing] = useState(false);
   const currentDate = new Date();
 
   if (isLoading) return <ActivityIndicator size="large" />;
@@ -21,51 +17,53 @@ export default function Reservations() {
     <ReservationItem reservation={item} key={item.id} />
   );
 
-  if (reservations.length > 0) {
-    const upcomingReservations: ReservationType[] = [];
-    const finishedReservations: ReservationType[] = [];
-    reservations.forEach((reservation) => {
-      const reservationDate = new Date(
-        reservation.projectionEvent.date.split("/").reverse().join("-"),
-      );
-      if (reservationDate > currentDate) {
-        upcomingReservations.push(reservation);
-      } else {
-        finishedReservations.push(reservation);
-      }
-    });
-    return (
-      <ThemedView style={styles.container}>
-        <ThemedText style={styles.header}>Réservations</ThemedText>
-        <ThemedText style={styles.subheader}>Vos séances à venir</ThemedText>
-        {upcomingReservations.length > 0 ? (
-          <FlatList
-            data={upcomingReservations}
-            renderItem={renderReservationItem}
-            keyExtractor={(item) => item.id.toString()}
-            contentContainerStyle={styles.list}
-            refreshControl={
-              <RefreshControl refreshing={isLoading} onRefresh={getData} />
-            }
-          />
-        ) : (
-          <ThemedText style={{ textAlign: "center" }}>
-            Pas de réservation à venir
+  const onRefresh = async () => {
+    setRefreshing(true);
+    getData();
+    setRefreshing(false);
+  };
+
+  const upcomingReservations: ReservationType[] = [];
+  const finishedReservations: ReservationType[] = [];
+
+  reservations.forEach((reservation) => {
+    const projectionEventDate = `${reservation.projectionEvent.date.split("/").reverse().join("-")} ${reservation.projectionEvent.beginAt}`;
+    const reservationDate = new Date(projectionEventDate);
+    if (reservationDate > currentDate) {
+      upcomingReservations.push(reservation);
+    } else {
+      finishedReservations.push(reservation);
+    }
+  });
+
+  const sectionListData = [
+    { title: "Vos séances à venir", data: upcomingReservations },
+    { title: "Vos séances terminées", data: finishedReservations },
+  ];
+
+  return (
+    <ThemedView style={styles.container}>
+      <ThemedText style={styles.header}>Réservations</ThemedText>
+      <SectionList
+        sections={reservations.length > 0 ? sectionListData : []}
+        renderSectionHeader={({ section }) =>
+          section.data.length > 0 ? (
+            <ThemedText style={styles.subheader}>{section.title}</ThemedText>
+          ) : null
+        }
+        renderItem={renderReservationItem}
+        ListEmptyComponent={
+          <ThemedText style={styles.subheader}>
+            Vous n'avez pas de réservation
           </ThemedText>
-        )}
-        <ThemedText style={styles.subheader}>Vos séances terminées</ThemedText>
-        <FlatList
-          data={finishedReservations}
-          renderItem={renderReservationItem}
-          keyExtractor={(item) => item.id.toString()}
-          contentContainerStyle={styles.list}
-          refreshControl={
-            <RefreshControl refreshing={isLoading} onRefresh={getData} />
-          }
-        />
-      </ThemedView>
-    );
-  }
+        }
+        keyExtractor={(item) => item.id.toString()}
+        contentContainerStyle={styles.list}
+        onRefresh={onRefresh}
+        refreshing={refreshing}
+      />
+    </ThemedView>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -84,6 +82,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "#666",
     marginBottom: 16,
+    marginTop: 16,
   },
   list: {
     paddingBottom: 16,
