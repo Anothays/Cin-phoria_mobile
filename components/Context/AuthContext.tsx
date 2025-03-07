@@ -9,6 +9,9 @@ import {
   useState,
 } from "react";
 
+const TOKEN_KEY = "jwt";
+const USER_INFOS = "user_infos";
+
 interface AuthState {
   token: string | null;
   authenticated: boolean | null;
@@ -22,10 +25,7 @@ interface AuthProps {
   onLogout?: () => Promise<any>;
 }
 
-const TOKEN_KEY = "jwt";
-const USER_INFOS = "user_infos";
 const AuthContext = createContext<AuthProps>({});
-
 export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
@@ -57,7 +57,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       return { error: true, message: error };
     }
   };
-
   const login = async (email: string, password: string) => {
     try {
       axios.defaults.headers.common["Content-Type"] = "application/json";
@@ -89,7 +88,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       return { error: true, message: error };
     }
   };
-
   const logout = async () => {
     // Delete token and userinfos from asyncStorage
     await SecureStore.deleteItemAsync(TOKEN_KEY);
@@ -105,13 +103,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       user: null,
     });
   };
-
   const value = {
     onRegister: register,
     onLogin: login,
     onLogout: logout,
     authState,
   };
-
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
